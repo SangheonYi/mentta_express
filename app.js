@@ -9,80 +9,80 @@ const secretKey = "Vm5Vakxzd3FTQkFWQnlMeUZXdW9WSXptbk1VWXpQT08=";
 const portnum = 8081;
 var domainInfo = {
   "guard": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url: "https://6c7158572d574b37a6ce3ac2e679dba8.apigw.ntruss.com/custom/v1/5846/103154ec8530662e6689270b1ab6a4a63fdc4432716bfa085e061d192ba16e5e",
+      privateKey: "S3hZTWxjQXJNalFJWXBGbHN3QnV5TkxCWWtPSFdlRk4=",
   },
   "king": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "villagegirl": {
       url,
-      privateKey:secretKey,
+      privateKey: secretKey,
   },
   "villager": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "agent": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "rick": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "scientist": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "nyan": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "beachnpc": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "forestnpc": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "desertnpc": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "lavanpc": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "priest": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "sorcerer": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "octocat": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "coder": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url: "https://6c7158572d574b37a6ce3ac2e679dba8.apigw.ntruss.com/custom/v1/5861/65602983ebe2751c231334bfabd23bf5eabcde878e660f19faefaa62f2d7d2cb",
+      privateKey: "eXh4b2RIbmJWUmpDUEV4VW16UEJPT2hBaVd5QUZrVE8=",
   },
   "beachnpc": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "desertnpc": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   },
   "othernpc": {
-      url:"http://localhost:8081/clovaChat",
-      privateKey:"",
+      url,
+      privateKey: secretKey,
   }
 };
 app.use(express.json())
@@ -99,7 +99,6 @@ app.use(cors());
 app.use("/clovaChat", router)
 router.post("/", cors(), async function(req, res){
   const { description, npc } = req.body;
-  // 이거 쪼개서 url, secretkey에 넣자
   const npcDomain = domainInfo[npc]
   console.log(npcDomain);
   const eventValue = description ? 'send' : 'open';
@@ -117,11 +116,11 @@ router.post("/", cors(), async function(req, res){
     event: eventValue,
   };
   const jsonbody = JSON.stringify(requestBody);
-  const encrypted = makeSign(jsonbody, secretKey);
+  const encrypted = makeSign(jsonbody, npcDomain.privateKey);
   console.log(`💥`);
   console.log(encrypted);
   const chat = await axios
-    .post(url, requestBody, {
+    .post(npcDomain.url, requestBody, {
       headers: {
         "Content-type": "application/json;UTF-8",
         "X-NCP-CHATBOT_SIGNATURE": encrypted,
